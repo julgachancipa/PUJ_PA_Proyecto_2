@@ -5,16 +5,14 @@ import java.io.Serializable;
 public class Persona implements Serializable{
     private String nombre;
     private String carrera;
-    private long sueldo;
     private long cedula;
     private long id;
     private int edad;
     private char sexo;
 
-    public Persona(String nombre, String carrera, long sueldo, long cedula, long id, int edad, char sexo) {
+    public Persona(String nombre, String carrera, long cedula, long id, int edad, char sexo) {
         this.nombre = nombre;
         this.carrera = carrera;
-        this.sueldo = sueldo;
         this.cedula = cedula;
         this.id = id;
         this.edad = edad;
@@ -27,10 +25,6 @@ public class Persona implements Serializable{
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
-    }
-
-    public void setSueldo(long sueldo) {
-        this.sueldo = sueldo;
     }
 
     public void setCedula(long cedula) {
@@ -55,10 +49,6 @@ public class Persona implements Serializable{
 
     public String getCarrera() {
         return this.carrera;
-    }
-
-    public long getSueldo() {
-        return this.sueldo;
     }
 
     public long getCedula() {

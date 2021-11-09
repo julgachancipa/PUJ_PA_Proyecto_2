@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import entidades.Empleado;
 import entidades.Estudiante;
 import entidades.Profesor;
 
@@ -17,36 +16,33 @@ public class Main {
 
         String nombre;
         String carrera;
-        long sueldo;
         long cedula;
         long id;
         int edad;
         char sexo;
-        String empresa;
+        String universidad;
         int creditos;
+        int horas_monitorias;
         String facultad;
+        char phd;
+        char planta;
+        int horas_clase;
 
         long delId;
 
-        ArrayList<Empleado>empleados = new ArrayList<Empleado>();
         ArrayList<Estudiante>estudiantes = new ArrayList<Estudiante>();
         ArrayList<Profesor>profesores = new ArrayList<Profesor>();
 
         do {
             System.out.println("_________________MENU_________________");
-            System.out.println("1. Lista de empleados.");
             System.out.println("2. Lista de estudiantes");
             System.out.println("3. Lista de profesores");
-            System.out.println("4. Adicionar empleado");
             System.out.println("5. Adicionar estudiante");
             System.out.println("6. Adicionar profesor");
-            System.out.println("7. Eliminar empleado");
             System.out.println("8. Eliminar estudiante");
             System.out.println("9. Eliminar profesor");
-            System.out.println("10. Guardar empleados");
             System.out.println("11. Guardar estudiantes");
             System.out.println("12. Guardar profesores");
-            System.out.println("13. Cargar empleados");
             System.out.println("14. Cargar estudiantes");
             System.out.println("15. Cargar profesores");
             System.out.println("16. Salir");
@@ -55,13 +51,6 @@ public class Main {
             opcion = sn.nextInt();
 
             switch (opcion) {
-                case 1:
-                    for (int i = 0; i < empleados.size(); i++) {
-                        System.out.println("__________________________________");
-                        empleados.get(i).atributos();
-                    }
-                    break;
-                
                 case 2:
                     for (int i = 0; i < estudiantes.size(); i++) {
                         System.out.println("__________________________________");
@@ -76,36 +65,6 @@ public class Main {
                     }
                     break;
 
-                case 4:
-                    System.out.println("Nombre: ");
-                    nombre = sn.next();
-                    
-                    System.out.println("Carrera: ");
-                    carrera = sn.next();
-                    
-                    System.out.println("Sueldo: ");
-                    sueldo = sn.nextLong();
-
-                    System.out.println("Cedula: ");
-                    cedula = sn.nextLong();
-                    
-                    System.out.println("Id: ");
-                    id = sn.nextLong();
-                    
-                    System.out.println("Edad: ");
-                    edad = sn.nextInt();
-                    
-                    System.out.println("Sexo: ");
-                    sexo = sn.next(".").charAt(0);
-                    
-                    System.out.println("Empresa: ");
-                    empresa = sn.next();
-
-                    Empleado empleado = new Empleado(nombre, carrera, sueldo, cedula, id, edad, sexo, empresa);
-
-                    empleados.add(empleado);
-                    break;
-                
                 case 5:
                     System.out.println("Nombre: ");
                     nombre = sn.next();
@@ -113,9 +72,6 @@ public class Main {
                     System.out.println("Carrera: ");
                     carrera = sn.next();
                     
-                    System.out.println("Sueldo: ");
-                    sueldo = sn.nextLong();
-
                     System.out.println("Cedula: ");
                     cedula = sn.nextLong();
                     
@@ -127,11 +83,17 @@ public class Main {
                     
                     System.out.println("Sexo: ");
                     sexo = sn.next(".").charAt(0);
+
+                    System.out.println("Universidad: ");
+                    universidad = sn.next();
                     
                     System.out.println("Creditos: ");
                     creditos = sn.nextInt();
 
-                    Estudiante estudiante = new Estudiante(nombre, carrera, sueldo, cedula, id, edad, sexo, creditos);
+                    System.out.println("Horas de monitorias: ");
+                    horas_monitorias = sn.nextInt();
+
+                    Estudiante estudiante = new Estudiante(nombre, carrera, cedula, id, edad, sexo, universidad, creditos, horas_monitorias);
 
                     estudiantes.add(estudiante);
                     
@@ -143,9 +105,6 @@ public class Main {
                     
                     System.out.println("Carrera: ");
                     carrera = sn.next();
-                    
-                    System.out.println("Sueldo: ");
-                    sueldo = sn.nextLong();
 
                     System.out.println("Cedula: ");
                     cedula = sn.nextLong();
@@ -158,29 +117,28 @@ public class Main {
                     
                     System.out.println("Sexo: ");
                     sexo = sn.next(".").charAt(0);
+
+                    System.out.println("Universidad: ");
+                    universidad = sn.next();
                     
                     System.out.println("Facultad: ");
                     facultad = sn.next();
 
-                    Profesor profesor = new Profesor(nombre, carrera, sueldo, cedula, id, edad, sexo, facultad);
+                    System.out.println("PHD (s/n): ");
+                    phd = sn.next(".").charAt(0);
+
+                    System.out.println("Planta (s/n): ");
+                    planta = sn.next(".").charAt(0);
+
+                    System.out.println("Horas de clase impartidas: ");
+                    horas_clase = sn.nextInt();
+
+                    Profesor profesor = new Profesor(nombre, carrera, cedula, id, edad, sexo, universidad, facultad, phd, planta, horas_clase);
 
                     profesores.add(profesor);
                         
                     break;
 
-                case 7:
-                    System.out.println("Id del empleado a eliminar: ");
-                    delId = sn.nextLong();
-
-                    for (int i = 0; i < empleados.size(); i++) {
-                        id = empleados.get(i).getId();
-
-                        if (id == delId) {
-                            empleados.remove(i);
-                        }
-                    }
-                    break;
-                
                 case 8:
                     System.out.println("Id del estudiante a eliminar: ");
                     delId = sn.nextLong();
@@ -208,19 +166,6 @@ public class Main {
                     }
                     break;
 
-                case 10:
-                    try {
-                        FileOutputStream fos = new FileOutputStream("empleados");
-                        ObjectOutputStream oos = new ObjectOutputStream(fos);   
-                        oos.writeObject(empleados);
-                        oos.close();
-                        fos.close();
-                    } catch(Exception ex) {
-                        ex.printStackTrace();
-                    }
-                
-                break;
-            
                 case 11:
                     try {
                         FileOutputStream fos = new FileOutputStream("estudiantes");
@@ -245,20 +190,6 @@ public class Main {
                     }
                     break;
 
-                case 13:
-                    try{
-                        FileInputStream fis = new FileInputStream("empleados");
-                        ObjectInputStream ois = new ObjectInputStream(fis);
-                    
-                        empleados = (ArrayList<Empleado>) ois.readObject();
-                        ois.close();
-                        fis.close();
-
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                
                 case 14:
                     try{
                         FileInputStream fis = new FileInputStream("estudiantes");
