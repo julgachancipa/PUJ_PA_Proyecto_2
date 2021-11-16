@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import entidades.Empleado;
 import entidades.Estudiante;
 import entidades.Profesor;
 
+import utils.UtilsCSV;
+import utils.RunPython;
 public class Main {
     public static void main(String[] args) throws IOException {
         Scanner sn = new Scanner(System.in);
@@ -26,12 +29,18 @@ public class Main {
         int creditos;
         String facultad;
 
-        long delId;
+        int contador;
+        long tsueldo = 0;
+        int masculino = 0;
+        int femenino = 0;
+        long pestudiantes = 0;
 
+        long delId;
         ArrayList<Empleado>empleados = new ArrayList<Empleado>();
         ArrayList<Estudiante>estudiantes = new ArrayList<Estudiante>();
         ArrayList<Profesor>profesores = new ArrayList<Profesor>();
 
+        HashMap<String, Integer> map;
         do {
             System.out.println("_________________MENU_________________");
             System.out.println("1. Lista de empleados.");
@@ -49,12 +58,25 @@ public class Main {
             System.out.println("13. Cargar empleados");
             System.out.println("14. Cargar estudiantes");
             System.out.println("15. Cargar profesores");
-            System.out.println("16. Salir");
+            System.out.println("16. Estadisticas carreras empleados");
+            System.out.println("17. Estadisticas carreras estudiantes");
+            System.out.println("18. Estadisticas carreras profesores");
+            System.out.println("19. Estadisticas sexo empleados");
+            System.out.println("20. Estadisticas sexo estudiantes");
+            System.out.println("21. Estadisticas sexo profesores");
+            System.out.println("22. Sueldo profesores");
+            System.out.println("23. Hombres y mujeres empleados");
+            System.out.println("24. Edad promedio estudiantes");
+            System.out.println("0. Salir");
 
+            System.out.println("______________________________________");
             System.out.println("Escribe el numero de la opción: ");
             opcion = sn.nextInt();
+            System.out.println("______________________________________");
 
             switch (opcion) {
+                case 0:
+                    break;
                 case 1:
                     for (int i = 0; i < empleados.size(); i++) {
                         System.out.println("__________________________________");
@@ -158,11 +180,14 @@ public class Main {
                     
                     System.out.println("Sexo: ");
                     sexo = sn.next(".").charAt(0);
+
+                    System.out.println("Empresa: ");
+                    empresa = sn.next();
                     
                     System.out.println("Facultad: ");
                     facultad = sn.next();
 
-                    Profesor profesor = new Profesor(nombre, carrera, sueldo, cedula, id, edad, sexo, facultad);
+                    Profesor profesor = new Profesor(nombre, carrera, sueldo, cedula, id, edad, sexo, empresa, facultad);
 
                     profesores.add(profesor);
                         
@@ -286,16 +311,95 @@ public class Main {
                         e.printStackTrace();
                     }
                     break;
-                
                 case 16:
-                    
+                    map = new HashMap<String,Integer>();
+                    for (int i = 0; i < empleados.size(); i++) {
+                        carrera = empleados.get(i).getCarrera();
+                        contador = map.getOrDefault(carrera, 0);
+                        map.put(carrera, contador+1);
+                    }
+                    UtilsCSV.WriteCSVFile("carrerasempleados.csv", map, "carrera");
+                    RunPython.RunScript("carrerasempleados.csv", "carrera");
                     break;
-                
+                case 17:
+                    map = new HashMap<String,Integer>();
+                    for (int i = 0; i < estudiantes.size(); i++) {
+                        carrera = estudiantes.get(i).getCarrera();
+                        contador = map.getOrDefault(carrera, 0);
+                        map.put(carrera, contador+1);
+                    }
+                    UtilsCSV.WriteCSVFile("carrerasestudiantes.csv", map, "carrera");
+                    RunPython.RunScript("carrerasestudiantes.csv", "carrera");
+                    break;
+                case 18:
+                    map = new HashMap<String,Integer>();
+                    for (int i = 0; i < profesores.size(); i++) {
+                        carrera = profesores.get(i).getCarrera();
+                        contador = map.getOrDefault(carrera, 0);
+                        map.put(carrera, contador+1);
+                    }
+                    UtilsCSV.WriteCSVFile("carrerasprofesores.csv", map, "carrera");
+                    RunPython.RunScript("carrerasprofesores.csv", "carrera");
+                    break;
+                case 19:
+                    map = new HashMap<String,Integer>();
+                    for (int i = 0; i < empleados.size(); i++) {
+                        sexo = empleados.get(i).getSexo();
+                        contador = map.getOrDefault(String.format("%c",sexo), 0);
+                        map.put(String.format("%c",sexo), contador+1);
+                    }
+                    UtilsCSV.WriteCSVFile("sexoempleados.csv", map, "sexo");
+                    RunPython.RunScript("sexoempleados.csv", "sexo");
+                    break;
+                case 20:
+                    map = new HashMap<String,Integer>();
+                    for (int i = 0; i < estudiantes.size(); i++) {
+                        sexo = estudiantes.get(i).getSexo();
+                        contador = map.getOrDefault(String.format("%c",sexo), 0);
+                        map.put(String.format("%c",sexo), contador+1);
+                    }
+                    UtilsCSV.WriteCSVFile("sexoestudiantes.csv", map, "sexo");
+                    RunPython.RunScript("sexoestudiantes.csv", "sexo");
+                    break;
+                case 21:
+                    map = new HashMap<String,Integer>();
+                    for (int i = 0; i < profesores.size(); i++) {
+                        sexo = profesores.get(i).getSexo();
+                        contador = map.getOrDefault(String.format("%c",sexo), 0);
+                        map.put(String.format("%c",sexo), contador+1);
+                    }
+                    UtilsCSV.WriteCSVFile("sexoprofesores.csv", map, "sexo");
+                    RunPython.RunScript("sexoprofesores.csv", "sexo");
+                    break;
+                case 22:
+                    for (int i = 0; i < profesores.size(); i++) {
+                        tsueldo += profesores.get(i).getSueldo();
+                    }
+                    System.out.println("Sueldo mensual de todos los profesores: " + tsueldo);
+                    break;
+                case 23:
+                    for (int i = 0; i < empleados.size(); i++) {
+                        if(empleados.get(i).getSexo() == 'm'){
+                            masculino++;
+                        }
+                        if(empleados.get(i).getSexo() == 'f'){
+                            femenino++;
+                        }
+                    }
+                    System.out.println("Cantidad de empleados hombres "+ masculino);
+                    System.out.println("Cantidad de empleados mujeres "+ femenino);
+                    break;     
+                case 24:
+                    for (int i = 0; i < estudiantes.size(); i++) {
+                        pestudiantes += estudiantes.get(i).getEdad();
+                    }
+                    System.out.println("Promedio edad estudiantes: "+ pestudiantes/estudiantes.size());
+                    break;
                 default:
-                    System.out.println("Solo números entre 1 y 16");
+                    System.out.println("La opcion no esta en el menu");
             }
 
-        } while (opcion != 16);
+        } while (opcion != 0);
 
         sn.close();
     }

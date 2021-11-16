@@ -1,10 +1,12 @@
 package entidades;
 
-public class Profesor extends Persona{
+import java.util.Map;
+
+public class Profesor extends Empleado{
     private String facultad;
 
-    public Profesor(String nombre, String carrera, long sueldo, long cedula, long id, int edad, char sexo, String facultad) {
-        super(nombre, carrera, sueldo, cedula, id, edad, sexo);
+    public Profesor(String nombre, String carrera, long sueldo, long cedula, long id, int edad, char sexo, String empresa, String facultad) {
+        super(nombre, carrera, sueldo, cedula, id, edad, sexo, empresa);
         this.facultad = facultad;
     }
     public String getFacultad() {
